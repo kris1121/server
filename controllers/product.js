@@ -110,7 +110,7 @@ export const update = async (req, res) => {
                 return res.json({ error: "Quantity is required!" });
             case !shipping.trim():
                 return res.json({ error: "Shipping is required!" });
-            case !photo && photo.size > 1000000:
+            case !photo && photo?.size > 1000000:
                 return res.json({ error: "Photo should be less than 1mb size!" });
         }
 
