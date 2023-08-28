@@ -129,3 +129,46 @@ export const update = async (req, res) => {
         return res.status(400).json(error.message)
     }
 }
+
+export const filteredProducts = async (req, res) => {
+    try {
+        const { checked, radio } = req.body;
+
+        let args = {};
+
+        if (checked.length > 0) args.category = checked; 
+        if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
+
+        console.log('args =>', args);
+
+        const products = await Product.find(args);
+        console.log('filtered products query =>', products.length);
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const productsCount = async (req, res) => {
+    try {
+        const total = await Product.find({}).estimatedDocumentCount();
+        res.json(total);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const listProducts = async (req, res) => {
+    try {
+        const perPage = 6;
+        const page = req.params.page ? req.params.page : 1;
+
+        const products = await Product.find({})
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort({ createdAt: -1 });
+
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+    }
+}
