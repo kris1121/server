@@ -210,3 +210,5 @@ export const relatedProducts = async (req, res) => {
     console.log(error);
   }
 };
+
+

@@ -15,7 +15,7 @@ import {
   productsCount,
   listProducts,
   productsSearch,
-  relatedProducts
+  relatedProducts,
 } from "../controllers/product.js"
 
 const router = express.Router();
