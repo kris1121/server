@@ -1,7 +1,19 @@
 import slugify from "slugify";
 import fs from "fs";
+import braintree from "braintree";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import Product from "../models/product.js";
+import Order from "../models/order.js";
+
+const gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY
+})
 
 export const create = async (req, res) => {
   try {
@@ -210,5 +222,70 @@ export const relatedProducts = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getBraintreeToken = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, (err, response) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(response);
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const processPayment = async (req, res) => {
+  try {
+    let { nonce, cart } = req.body;
+
+    let total = 0;
+    cart?.map(product => {
+      total += product.price;
+    })
+
+    let newTransaction = gateway.transaction.sale({
+      amount: total,
+      paymentMethodNonce: nonce,
+      options: {
+        submitForSettlement: true
+      }
+    }, (err, result) => {
+      if (result) {
+        const order = new Order({
+          products: cart,
+          payment: result,
+          buyer: req.user._id
+        }).save();
+        decrementQuantity(cart);
+        res.json({ ok: true });
+      } else {
+        res.status(500).send(err)
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const decrementQuantity = async cart => {
+  try {
+    const bulkOps = cart.map(item => {
+      return {
+        updateOne: {
+          filter: { _id: item._id },
+          update: { $inc: { quantity: -0, sold: +1 }}
+        }
+      };
+    });
+
+    const updated = await Product.bulkWrite(bulkOps, {});
+    console.log("blk updated",  updated);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
