@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const sendMail = (req, res, order) => {
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

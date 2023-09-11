@@ -21,7 +21,7 @@ mongoose
 const port = process.env.PORT || 3000;
 
 //middleware
-app.use(cors());
+app.use(cors({ origin: '*'}));
 app.use(morgan("dev"));
 app.use(express.json());
 //router middleware

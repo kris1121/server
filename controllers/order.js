@@ -34,7 +34,7 @@ export const updateOrderStatus = async (req, res) => {
       },
       { new: true }
     ).populate("buyer", "name");
-    console.log("updated => ",updated)
+    // console.log("updated => ",updated)
     sendMail(req, res, updated);
 
 

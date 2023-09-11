@@ -1,0 +1,32 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: server
+    src: ./
+    engine: nodejs16
+    public: true
+    primary: true
+    presets:
+      env:
+        - name: BRAINTREE_PUBLIC_KEY
+          default: "qqtkcc3vt257pnr9" 
+        - name: BRAINTREE_MERCHANT_ID 
+          default: "hfrcf5kvtwtt48yg"
+        - name: BRAINTREE_PRIVATE_KEY
+          default: "8e5d7a74cac06e49c37cf61e59a3946d" 
+        - name: MAIL_USER
+          default: "krismat1121@gmail.com"
+        - name: OAUTH_CLIENT_ID
+          default: "434369061596-qbsd9c6muccr2anahkr78t85n2ej8mr6.apps.googleusercontent.com"  
+        - name: OAUTH_SECRET_KEY
+          default: "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" 
+        - name: OAUTH_REFRESH_TOKEN
+          default: 1//045B7VqRzp_SWCgYIARAAGAQSNwF-L9IrIb59GcZym6p3hCHgL3BfBPUcsbgvyKt0mp0dQxadqdLGbyVrXIFhe4C-N4RbRb4oD30 
+        - name: OAUTH_ACCESS_TOKEN
+          default: "ya29.a0AfB_byD2Rf4-BkJDeFnEOHOsVos3MCZAU4tBkTOUVEjjRj0HPAHA3Fvf3S_0M8Don-dJLyyJiarqrT7QFoO5npUiujSgRksnZ8GO6knpdZTgVfWKQXcWfnoI3GQWNvHG0FRV8flOAlGmso5FxKL7fSmwYpl0AfhKT8B7hwaCgYKAeESARISFQHsvYlsU8Ax2lphnIorH98sSG3XRg0173"  
+        - name: MONGO_URI
+          default: "mongodb+srv://kris:vP7OtVfaTg2c6PDu@ecomm.ufr59ch.mongodb.net/?retryWrites=true&w=majority"
+        - name: JWT_SECRET
+          default: "kmpmpmrtmbwtrsh[bsrt]" 
+       
+
